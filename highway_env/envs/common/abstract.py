@@ -335,9 +335,9 @@ class AbstractEnv(gym.Env):
         If a RecordVideo wrapper has been set, use it to capture intermediate frames.
         """
         if self.viewer is not None and self.enable_auto_render:
-            if self._record_video_wrapper:
+            if self._record_video_wrapper and self._record_video_wrapper.recording:
                 self._record_video_wrapper._capture_frame()
-            else:
+            elif not self._record_video_wrapper:
                 self.render()
 
     def simplify(self) -> AbstractEnv:

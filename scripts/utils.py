@@ -3,11 +3,18 @@ from pathlib import Path
 
 from gymnasium.wrappers import RecordVideo
 from IPython import display as ipythondisplay
-from pyvirtualdisplay import Display
+import os
 
-
-display = Display(visible=0, size=(1400, 900))
-display.start()
+# pyvirtualdisplay is used for headless rendering (e.g. on Colab/Linux servers)
+# It requires Xvfb which is not typically available on Windows.
+if os.name != 'nt':
+    try:
+        from pyvirtualdisplay import Display
+        display = Display(visible=0, size=(1400, 900))
+        display.start()
+    except (ImportError, FileNotFoundError):
+        # Fallback if pyvirtualdisplay or Xvfb is not present
+        pass
 
 
 def record_videos(env, video_folder="videos"):
